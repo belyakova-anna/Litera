@@ -3,18 +3,18 @@ import type { ReactNode } from 'react'
 export function StarBurst({
   className = '',
   size = 28,
-  delay = false,
+  twinkle = false,
 }: {
   className?: string
   size?: number
-  delay?: boolean
+  twinkle?: boolean
 }) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 64 64"
-      className={`twinkle ${delay ? 'twinkle-delay' : ''} ${className}`}
+      className={`${twinkle ? 'twinkle' : ''} ${className}`}
       aria-hidden
     >
       <path
@@ -49,20 +49,11 @@ export function Crescent({
         stroke="#1e3a5f"
         strokeWidth="1.4"
       />
-      <circle cx="42" cy="28" r="1.5" fill="#1e3a5f" />
-      <circle cx="46" cy="36" r="1" fill="#1e3a5f" />
-      <path
-        d="M38 40 Q44 44 48 40"
-        fill="none"
-        stroke="#1e3a5f"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
     </svg>
   )
 }
 
-export function SunFace({
+export function Sun({
   className = '',
   size = 40,
 }: {
@@ -91,15 +82,6 @@ export function SunFace({
         />
       ))}
       <circle cx="40" cy="40" r="18" fill="#e0c86a" stroke="#1e3a5f" strokeWidth="1.5" />
-      <circle cx="33" cy="37" r="1.8" fill="#1e3a5f" />
-      <circle cx="47" cy="37" r="1.8" fill="#1e3a5f" />
-      <path
-        d="M33 46 Q40 52 47 46"
-        fill="none"
-        stroke="#1e3a5f"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-      />
     </svg>
   )
 }
@@ -148,7 +130,7 @@ export function EngravedFrame({ children }: { children: ReactNode }) {
           <Crescent size={20} className="-scale-x-100" />
         </div>
         <div className="absolute bottom-3 right-3">
-          <StarBurst size={22} delay />
+          <StarBurst size={22} />
         </div>
       </div>
       <div className="relative z-10 px-8 py-10 sm:px-12 sm:py-12">{children}</div>

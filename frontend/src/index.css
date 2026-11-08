@@ -12,9 +12,10 @@
   --color-rose: #e8a0b0;
   --color-sky: #7eb6d9;
   --color-cloud: #d9e6f2;
+  /* Nunito — UI и текст; Cormorant — заголовки; Marck Script — редкий жест */
+  --font-body: 'Nunito', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Literata', Georgia, serif;
-  --font-hand: 'Caveat', cursive;
+  --font-script: 'Marck Script', 'Segoe Script', cursive;
 }
 
 @layer base {
@@ -27,6 +28,8 @@
     min-height: 100vh;
     color: var(--color-ink);
     font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.55;
     background:
       radial-gradient(ellipse at 12% 8%, rgba(126, 182, 217, 0.35), transparent 42%),
       radial-gradient(ellipse at 88% 12%, rgba(232, 160, 176, 0.28), transparent 40%),
@@ -49,8 +52,8 @@
     font-family: var(--font-display);
   }
 
-  .font-hand {
-    font-family: var(--font-hand);
+  .font-script {
+    font-family: var(--font-script);
   }
 
   .paper-grain {
@@ -105,10 +108,6 @@
     animation: twinkle 2.8s ease-in-out infinite;
   }
 
-  .twinkle-delay {
-    animation-delay: 1.1s;
-  }
-
   .sticker-tilt {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
@@ -120,7 +119,6 @@
   @media (prefers-reduced-motion: reduce) {
     .page-enter,
     .twinkle,
-    .twinkle-delay,
     .sticker-tilt {
       animation: none !important;
       transition: none !important;
@@ -136,6 +134,7 @@
   background: transparent !important;
   box-shadow: none !important;
   border-radius: 0 !important;
+  font-family: var(--font-body) !important;
 }
 
 .w-md-editor-toolbar {

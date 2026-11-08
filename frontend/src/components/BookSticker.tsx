@@ -27,7 +27,7 @@ export function BookSticker({ book, index = 0 }: { book: BookListItem; index?: n
               loading="lazy"
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-navy/10 font-hand text-2xl text-gold">
+            <div className="flex h-full items-center justify-center bg-navy/10 font-display text-2xl text-gold">
               ✦
             </div>
           )}
@@ -38,9 +38,9 @@ export function BookSticker({ book, index = 0 }: { book: BookListItem; index?: n
           </h3>
           <p className="mt-1 text-sm text-ink/70">{book.author || 'Автор неизвестен'}</p>
           {book.genre && (
-            <p className="font-hand mt-1 text-lg text-ochre">{book.genre}</p>
+            <p className="mt-1 text-sm font-medium text-ochre">{book.genre}</p>
           )}
-          <p className="mt-2 inline-block border border-dashed border-cobalt/40 px-2 py-0.5 font-hand text-base text-cobalt">
+          <p className="mt-2 inline-block border border-dashed border-cobalt/40 px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-cobalt">
             {STATUS[book.status] ?? book.status}
           </p>
           <p className="mt-2 text-xs text-navy/50">

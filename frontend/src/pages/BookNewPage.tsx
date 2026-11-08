@@ -77,7 +77,7 @@ export function BookNewPage() {
     <SketchPage title="Новая запись">
       <form onSubmit={onSubmit} className="space-y-5">
         <label className="relative block">
-          <span className="font-hand text-xl text-navy">Поиск книги</span>
+          <span className="text-sm font-semibold text-navy">Поиск книги</span>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -85,7 +85,7 @@ export function BookNewPage() {
             className="mt-1 w-full border-2 border-navy/20 bg-paper-deep/40 px-3 py-2 outline-none focus:border-gold"
           />
           {searching && (
-            <span className="font-hand absolute right-3 top-10 text-ochre">ищу…</span>
+            <span className="absolute right-3 top-9 text-sm text-ochre">ищу…</span>
           )}
           {suggestions.length > 0 && (
             <ul className="absolute z-20 mt-1 max-h-64 w-full overflow-auto border-2 border-gold/60 bg-paper shadow-lg">
@@ -116,7 +116,7 @@ export function BookNewPage() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block sm:col-span-2">
-            <span className="font-hand text-xl text-navy">Название</span>
+            <span className="text-sm font-semibold text-navy">Название</span>
             <input
               required
               value={title}
@@ -125,7 +125,7 @@ export function BookNewPage() {
             />
           </label>
           <label className="block">
-            <span className="font-hand text-xl text-navy">Автор</span>
+            <span className="text-sm font-semibold text-navy">Автор</span>
             <input
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
@@ -133,7 +133,7 @@ export function BookNewPage() {
             />
           </label>
           <label className="block">
-            <span className="font-hand text-xl text-navy">Жанр</span>
+            <span className="text-sm font-semibold text-navy">Жанр</span>
             <input
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
@@ -141,7 +141,7 @@ export function BookNewPage() {
             />
           </label>
           <label className="block">
-            <span className="font-hand text-xl text-navy">Статус</span>
+            <span className="text-sm font-semibold text-navy">Статус</span>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as BookStatus)}
@@ -169,7 +169,7 @@ export function BookNewPage() {
         <button
           type="submit"
           disabled={saving || !title.trim()}
-          className="border-2 border-navy bg-navy px-5 py-2 font-display text-lg text-gold-soft hover:bg-cobalt disabled:opacity-60"
+          className="border-2 border-navy bg-navy px-5 py-2 text-sm font-semibold text-gold-soft hover:bg-cobalt disabled:opacity-60"
         >
           {saving ? 'Сохраняю…' : 'Добавить в дневник'}
         </button>

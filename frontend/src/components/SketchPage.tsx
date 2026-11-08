@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { EngravedFrame, SunFace } from './CelestialDecor'
+import { EngravedFrame, Sun } from './CelestialDecor'
 
 export function SketchPage({
   children,
@@ -8,7 +8,7 @@ export function SketchPage({
 }: {
   children: ReactNode
   title?: string
-  subtitle?: string
+  subtitle?: ReactNode
 }) {
   return (
     <article className="page-enter mx-auto w-full max-w-5xl">
@@ -18,7 +18,7 @@ export function SketchPage({
           aria-hidden
         />
         <div className="pointer-events-none absolute -right-2 top-8 z-20 opacity-90" aria-hidden>
-          <SunFace size={48} />
+          <Sun size={48} />
         </div>
         <EngravedFrame>
           {(title || subtitle) && (
@@ -28,9 +28,7 @@ export function SketchPage({
                   {title}
                 </h1>
               )}
-              {subtitle && (
-                <p className="font-hand mt-2 text-2xl text-ochre">{subtitle}</p>
-              )}
+              {subtitle && <div className="mt-2 text-ochre">{subtitle}</div>}
             </header>
           )}
           {children}

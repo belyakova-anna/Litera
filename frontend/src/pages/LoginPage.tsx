@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { api, ApiError } from '../api/client'
-import { Crescent, StarBurst, SunFace } from '../components/CelestialDecor'
+import { Crescent, StarBurst, Sun } from '../components/CelestialDecor'
 
 export function LoginPage({ onSuccess }: { onSuccess: () => void }) {
   const [password, setPassword] = useState('')
@@ -32,24 +32,24 @@ export function LoginPage({ onSuccess }: { onSuccess: () => void }) {
           <Crescent size={32} />
         </div>
         <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-          <SunFace size={42} />
+          <Sun size={42} />
         </div>
 
         <h1 className="font-display text-center text-5xl font-bold tracking-[0.12em] text-navy">
           Litera
         </h1>
-        <p className="font-hand mt-2 text-center text-2xl text-ochre">
+        <p className="font-script mt-2 text-center text-2xl text-ochre">
           вход в читательский дневник
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <label className="block">
-            <span className="font-hand text-xl text-navy">Пароль</span>
+            <span className="text-sm font-semibold text-navy">Пароль</span>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full border-2 border-navy/25 bg-paper-deep/40 px-3 py-2 font-body outline-none focus:border-gold"
+              className="mt-1 w-full border-2 border-navy/25 bg-paper-deep/40 px-3 py-2 outline-none focus:border-gold"
               autoFocus
               required
             />
@@ -58,7 +58,7 @@ export function LoginPage({ onSuccess }: { onSuccess: () => void }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full border-2 border-navy bg-navy px-4 py-2 font-display text-xl tracking-wide text-gold-soft transition hover:bg-cobalt disabled:opacity-60"
+            className="w-full border-2 border-navy bg-navy px-4 py-2 text-base font-semibold tracking-wide text-gold-soft transition hover:bg-cobalt disabled:opacity-60"
           >
             {loading ? 'Открываю…' : 'Открыть дневник'}
           </button>

@@ -82,67 +82,69 @@ export function ReadingHeatmap({
     return { weeks: weeksArr, monthLabels: labels }
   }, [year])
 
+  const gridStyle = {
+    gridTemplateColumns: `1.75rem repeat(${weeks.length}, minmax(0, 1fr))`,
+  }
+
   return (
-    <div>
-      <div className="overflow-x-auto pb-2">
-        <div className="inline-block min-w-max">
-          <div className="mb-1 flex gap-[3px] pl-8">
+    <div className="w-full">
+      <div className="w-full overflow-x-auto pb-2">
+        <div className="min-w-[36rem] w-full">
+          <div className="mb-1 grid gap-[3px]" style={gridStyle}>
+            <div />
             {weeks.map((_, wi) => {
               const label = monthLabels.find((m) => m.weekIndex === wi)
               return (
-                <div key={wi} className="w-[12px] text-[10px] leading-none text-navy/60">
+                <div
+                  key={wi}
+                  className="overflow-hidden text-[10px] leading-none text-navy/60"
+                >
                   {label?.label ?? ''}
                 </div>
               )
             })}
           </div>
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-[3px] pt-0">
-              {WEEKDAYS.map((d, i) => (
-                <div
-                  key={d}
-                  className="flex h-[12px] items-center text-[10px] leading-none text-navy/55"
-                >
-                  {i % 2 === 0 ? d : ''}
+
+          <div className="grid gap-[3px]" style={gridStyle}>
+            {WEEKDAYS.map((day, di) => (
+              <div key={day} className="contents">
+                <div className="flex items-center text-[10px] leading-none text-navy/55">
+                  {di % 2 === 0 ? day : ''}
                 </div>
-              ))}
-            </div>
-            <div className="flex gap-[3px]">
-              {weeks.map((week, wi) => (
-                <div key={wi} className="flex flex-col gap-[3px]">
-                  {week.map((cell) => {
-                    const iso = toIso(cell)
-                    const inYear = cell.getFullYear() === year
-                    const activity = byDay.get(iso)
-                    const count = activity?.count ?? 0
-                    return (
-                      <button
-                        key={iso}
-                        type="button"
-                        disabled={!inYear}
-                        title={inYear ? `${iso}: ${count}` : undefined}
-                        onClick={() => {
-                          if (activity) setSelected(activity)
-                          else setSelected(null)
-                        }}
-                        className={[
-                          'h-[12px] w-[12px] rounded-[2px] border border-navy/15',
-                          inYear ? levelClass(count) : 'bg-transparent border-transparent',
-                          inYear && count > 0 ? 'cursor-pointer hover:ring-1 hover:ring-gold' : '',
-                        ].join(' ')}
-                      />
-                    )
-                  })}
-                </div>
-              ))}
-            </div>
+                {weeks.map((week, wi) => {
+                  const cell = week[di]
+                  const iso = toIso(cell)
+                  const inYear = cell.getFullYear() === year
+                  const activity = byDay.get(iso)
+                  const count = activity?.count ?? 0
+                  return (
+                    <button
+                      key={iso}
+                      type="button"
+                      disabled={!inYear}
+                      title={inYear ? `${iso}: ${count}` : undefined}
+                      onClick={() => {
+                        if (activity) setSelected(activity)
+                        else setSelected(null)
+                      }}
+                      className={[
+                        'aspect-square w-full rounded-[2px] border border-navy/15',
+                        inYear ? levelClass(count) : 'border-transparent bg-transparent',
+                        inYear && count > 0 ? 'cursor-pointer hover:ring-1 hover:ring-gold' : '',
+                      ].join(' ')}
+                    />
+                  )
+                })}
+              </div>
+            ))}
           </div>
-          <div className="mt-3 flex items-center gap-2 font-hand text-base text-navy/70">
+
+          <div className="mt-3 flex items-center gap-2 text-xs text-navy/70">
             <span>меньше</span>
             {[0, 1, 2, 3, 4].map((n) => (
               <span
                 key={n}
-                className={`inline-block h-[12px] w-[12px] rounded-[2px] border border-navy/15 ${levelClass(n)}`}
+                className={`inline-block h-3 w-3 rounded-[2px] border border-navy/15 ${levelClass(n)}`}
               />
             ))}
             <span>больше</span>
@@ -152,7 +154,7 @@ export function ReadingHeatmap({
 
       {selected && (
         <div className="mt-5 border border-dashed border-ochre/60 bg-paper-deep/50 p-4">
-          <p className="font-hand text-xl text-navy">
+          <p className="text-sm font-medium text-navy">
             {parseDay(selected.day).toLocaleDateString('ru-RU', {
               day: 'numeric',
               month: 'long',

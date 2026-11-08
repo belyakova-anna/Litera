@@ -117,7 +117,7 @@ export function ProfilePage() {
   if (!profile || !draft || !activity) {
     return (
       <SketchPage title="Профиль">
-        <p className="font-hand text-2xl text-navy/60">Листаю дневник…</p>
+        <p className="text-base text-navy/60">Листаю дневник…</p>
       </SketchPage>
     )
   }
@@ -127,17 +127,23 @@ export function ProfilePage() {
   return (
     <SketchPage
       title={shown.display_name || 'Читатель'}
-      subtitle={editing ? 'редактирование профиля' : 'профиль среди созвездий'}
+      subtitle={
+        editing ? (
+          <p className="text-sm font-medium">редактирование профиля</p>
+        ) : (
+          <p className="font-script text-2xl">профиль среди созвездий</p>
+        )
+      }
     >
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <p className="font-hand text-xl text-navy/70">
+        <p className="text-sm text-navy/70">
           {editing ? 'режим правки' : 'режим просмотра'}
         </p>
         {!editing ? (
           <button
             type="button"
             onClick={startEdit}
-            className="border-2 border-navy bg-navy px-4 py-1.5 font-display text-lg text-gold-soft hover:bg-cobalt"
+            className="border-2 border-navy bg-navy px-4 py-1.5 text-sm font-semibold text-gold-soft hover:bg-cobalt"
           >
             Редактировать
           </button>
@@ -145,7 +151,7 @@ export function ProfilePage() {
           <button
             type="button"
             onClick={cancelEdit}
-            className="font-hand text-xl text-ochre underline"
+            className="text-sm font-medium text-ochre underline"
           >
             Отменить
           </button>
@@ -156,7 +162,7 @@ export function ProfilePage() {
         <form onSubmit={onSave} className="grid gap-5 sm:grid-cols-2">
           {FIELDS.map(([key, label]) => (
             <label key={key} className="block">
-              <span className="font-hand text-xl text-navy">{label}</span>
+              <span className="text-sm font-semibold text-navy">{label}</span>
               <input
                 value={draft[key]}
                 onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
@@ -165,7 +171,7 @@ export function ProfilePage() {
             </label>
           ))}
           <label className="block sm:col-span-2">
-            <span className="font-hand text-xl text-navy">О себе</span>
+            <span className="text-sm font-semibold text-navy">О себе</span>
             <textarea
               value={draft.bio}
               onChange={(e) => setDraft({ ...draft, bio: e.target.value })}
@@ -177,14 +183,14 @@ export function ProfilePage() {
             <button
               type="submit"
               disabled={saving}
-              className="border-2 border-navy bg-navy px-5 py-2 font-display text-lg text-gold-soft hover:bg-cobalt disabled:opacity-60"
+              className="border-2 border-navy bg-navy px-5 py-2 text-sm font-semibold text-gold-soft hover:bg-cobalt disabled:opacity-60"
             >
               {saving ? 'Сохраняю…' : 'Сохранить'}
             </button>
             <button
               type="button"
               onClick={cancelEdit}
-              className="border-2 border-navy/30 px-5 py-2 font-display text-lg text-navy hover:border-navy"
+              className="border-2 border-navy/30 px-5 py-2 text-sm font-semibold text-navy hover:border-navy"
             >
               Отмена
             </button>
@@ -194,10 +200,10 @@ export function ProfilePage() {
         <div className="grid gap-6 sm:grid-cols-2">
           {FIELDS.map(([key, label]) => (
             <div key={key} className="border-b border-dashed border-gold/40 pb-3">
-              <p className="font-hand text-xl text-navy/70">{label}</p>
+              <p className="text-sm font-medium text-navy/70">{label}</p>
               <p
                 className={[
-                  'mt-1 font-display text-2xl text-navy',
+                  'mt-1 text-lg text-navy',
                   profile[key].trim() ? '' : 'italic text-navy/40',
                 ].join(' ')}
               >
@@ -206,7 +212,7 @@ export function ProfilePage() {
             </div>
           ))}
           <div className="sm:col-span-2 border border-dashed border-ochre/40 bg-paper-deep/30 p-4">
-            <p className="font-hand text-xl text-navy/70">О себе</p>
+            <p className="text-sm font-medium text-navy/70">О себе</p>
             <p
               className={[
                 'mt-2 whitespace-pre-wrap leading-relaxed text-ink',
@@ -229,15 +235,15 @@ export function ProfilePage() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              className="border border-navy/30 px-2 py-1 font-hand text-lg"
+              className="border border-navy/30 px-2 py-1 text-sm"
               onClick={() => changeYear(year - 1)}
             >
               ←
             </button>
-            <span className="font-display text-xl text-navy">{year}</span>
+            <span className="text-lg font-semibold text-navy">{year}</span>
             <button
               type="button"
-              className="border border-navy/30 px-2 py-1 font-hand text-lg"
+              className="border border-navy/30 px-2 py-1 text-sm"
               onClick={() => changeYear(year + 1)}
             >
               →
@@ -249,7 +255,7 @@ export function ProfilePage() {
 
         <div className="mt-6 flex flex-wrap items-end gap-3 border border-dashed border-gold/50 bg-cloud/30 p-4">
           <label className="min-w-[200px] flex-1">
-            <span className="font-hand text-xl text-navy">Читаю сегодня</span>
+            <span className="text-sm font-semibold text-navy">Читаю сегодня</span>
             <select
               value={markBookId}
               onChange={(e) => setMarkBookId(e.target.value)}
@@ -267,14 +273,14 @@ export function ProfilePage() {
             type="button"
             onClick={markToday}
             disabled={!markBookId}
-            className="border-2 border-gold bg-gold/90 px-4 py-2 font-display text-lg text-navy hover:bg-gold-soft disabled:opacity-50"
+            className="border-2 border-gold bg-gold/90 px-4 py-2 text-sm font-semibold text-navy hover:bg-gold-soft disabled:opacity-50"
           >
             Отметить день ✦
           </button>
         </div>
 
         {(message || error) && (
-          <p className={`mt-3 font-hand text-xl ${error ? 'text-ochre' : 'text-cobalt'}`}>
+          <p className={`mt-3 text-sm ${error ? 'text-ochre' : 'text-cobalt'}`}>
             {error ?? message}
           </p>
         )}

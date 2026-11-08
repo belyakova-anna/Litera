@@ -21,7 +21,7 @@ export default function App() {
   if (auth === null) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="font-hand text-3xl text-navy">✦ Litera открывается…</p>
+        <p className="font-script text-3xl text-navy">✦ Litera открывается…</p>
       </div>
     )
   }

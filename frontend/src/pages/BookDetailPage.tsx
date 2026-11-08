@@ -145,7 +145,7 @@ export function BookDetailPage() {
     return (
       <SketchPage title="Книга">
         <p className="text-ochre">{error}</p>
-        <Link to="/books" className="font-hand text-xl text-cobalt underline">
+        <Link to="/books" className="text-sm font-medium text-cobalt underline">
           ← к полке
         </Link>
       </SketchPage>
@@ -155,28 +155,31 @@ export function BookDetailPage() {
   if (!book || !active) {
     return (
       <SketchPage title="Книга">
-        <p className="font-hand text-2xl text-navy/60">Открываю страницу…</p>
+        <p className="text-base text-navy/60">Открываю страницу…</p>
       </SketchPage>
     )
   }
 
   return (
-    <SketchPage title={book.title} subtitle={book.author || 'без автора'}>
+    <SketchPage
+      title={book.title}
+      subtitle={<p className="text-lg font-medium">{book.author || 'без автора'}</p>}
+    >
       <div className="mb-6 flex flex-wrap gap-3">
-        <Link to="/books" className="font-hand text-xl text-cobalt underline">
+        <Link to="/books" className="text-sm font-medium text-cobalt underline">
           ← к полке
         </Link>
         <button
           type="button"
           onClick={markToday}
-          className="border-2 border-gold bg-gold/80 px-3 py-1 font-display text-base text-navy hover:bg-gold-soft"
+          className="border-2 border-gold bg-gold/80 px-3 py-1 text-sm font-semibold text-navy hover:bg-gold-soft"
         >
           Читаю сегодня ✦
         </button>
         <button
           type="button"
           onClick={removeBook}
-          className="font-hand text-lg text-ochre underline"
+          className="text-sm font-medium text-ochre underline"
         >
           удалить
         </button>
@@ -192,7 +195,7 @@ export function BookDetailPage() {
         )}
         <form onSubmit={saveMeta} className="min-w-[240px] flex-1 space-y-3">
           <label className="block">
-            <span className="font-hand text-lg text-navy">Название</span>
+            <span className="text-sm font-semibold text-navy">Название</span>
             <input
               value={meta.title}
               onChange={(e) => setMeta({ ...meta, title: e.target.value })}
@@ -200,7 +203,7 @@ export function BookDetailPage() {
             />
           </label>
           <label className="block">
-            <span className="font-hand text-lg text-navy">Автор</span>
+            <span className="text-sm font-semibold text-navy">Автор</span>
             <input
               value={meta.author}
               onChange={(e) => setMeta({ ...meta, author: e.target.value })}
@@ -208,7 +211,7 @@ export function BookDetailPage() {
             />
           </label>
           <label className="block">
-            <span className="font-hand text-lg text-navy">Жанр</span>
+            <span className="text-sm font-semibold text-navy">Жанр</span>
             <input
               value={meta.genre}
               onChange={(e) => setMeta({ ...meta, genre: e.target.value })}
@@ -216,7 +219,7 @@ export function BookDetailPage() {
             />
           </label>
           <label className="block">
-            <span className="font-hand text-lg text-navy">Статус</span>
+            <span className="text-sm font-semibold text-navy">Статус</span>
             <select
               value={meta.status}
               onChange={(e) => setMeta({ ...meta, status: e.target.value as BookStatus })}
@@ -233,7 +236,7 @@ export function BookDetailPage() {
           <button
             type="submit"
             disabled={saving}
-            className="border-2 border-navy bg-navy px-4 py-1.5 font-display text-gold-soft hover:bg-cobalt"
+            className="border-2 border-navy bg-navy px-4 py-1.5 text-sm font-semibold text-gold-soft hover:bg-cobalt"
           >
             Сохранить карточку
           </button>
@@ -242,7 +245,7 @@ export function BookDetailPage() {
 
       <section>
         <h2 className="font-display text-3xl text-navy">Заметки</h2>
-        <p className="font-hand mb-4 text-lg text-ochre">
+        <p className="mb-4 text-sm text-ochre">
           подсказки ниже — не обязательны, пишите как хочется
         </p>
 
@@ -256,7 +259,7 @@ export function BookDetailPage() {
                 type="button"
                 onClick={() => setActiveId(s.id)}
                 className={[
-                  'border px-3 py-1 font-hand text-lg transition',
+                  'border px-3 py-1 text-sm font-medium transition',
                   activeId === s.id
                     ? 'border-navy bg-navy text-gold-soft'
                     : 'border-dashed border-cobalt/50 text-cobalt hover:border-navy',
@@ -269,7 +272,7 @@ export function BookDetailPage() {
           <button
             type="button"
             onClick={addFreeSection}
-            className="border border-dashed border-gold px-3 py-1 font-hand text-lg text-ochre"
+            className="border border-dashed border-gold px-3 py-1 text-sm font-medium text-ochre"
           >
             + свободная
           </button>
@@ -301,12 +304,12 @@ export function BookDetailPage() {
             type="button"
             onClick={saveNotes}
             disabled={saving}
-            className="border-2 border-navy bg-navy px-5 py-2 font-display text-lg text-gold-soft hover:bg-cobalt disabled:opacity-60"
+            className="border-2 border-navy bg-navy px-5 py-2 text-sm font-semibold text-gold-soft hover:bg-cobalt disabled:opacity-60"
           >
             {saving ? 'Сохраняю…' : 'Сохранить заметки'}
           </button>
           {(message || error) && (
-            <span className={`font-hand text-xl ${error ? 'text-ochre' : 'text-cobalt'}`}>
+            <span className={`text-sm ${error ? 'text-ochre' : 'text-cobalt'}`}>
               {error ?? message}
             </span>
           )}

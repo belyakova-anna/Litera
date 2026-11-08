@@ -4,7 +4,7 @@ import { Crescent, StarBurst } from './CelestialDecor'
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   [
-    'font-hand text-xl transition-colors',
+    'text-base font-medium tracking-wide transition-colors',
     isActive ? 'text-gold-soft underline decoration-wavy underline-offset-4' : 'text-cloud/90 hover:text-gold-soft',
   ].join(' ')
 
@@ -25,7 +25,7 @@ export function Layout({ onLogout }: { onLogout: () => void }) {
         />
         <div className="relative mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <NavLink to="/" className="group flex items-center gap-2">
-            <StarBurst size={26} />
+            <StarBurst size={26} twinkle />
             <span className="font-display text-3xl font-bold tracking-[0.08em] text-gold-soft group-hover:text-paper">
               Litera
             </span>
@@ -46,7 +46,7 @@ export function Layout({ onLogout }: { onLogout: () => void }) {
             </NavLink>
             <button
               type="button"
-              className="font-hand text-lg text-rose/90 hover:text-rose"
+              className="text-sm font-medium text-rose/90 hover:text-rose"
               onClick={async () => {
                 await api.logout()
                 onLogout()
@@ -63,7 +63,7 @@ export function Layout({ onLogout }: { onLogout: () => void }) {
       </main>
 
       <footer className="pb-8 text-center">
-        <p className="font-hand text-lg text-navy/70">✦ бумажный скетчбук среди звёзд ✦</p>
+        <p className="font-script text-2xl text-navy/70">✦ бумажный скетчбук среди звёзд ✦</p>
       </footer>
     </div>
   )
