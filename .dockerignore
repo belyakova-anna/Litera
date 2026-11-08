@@ -1,0 +1,10 @@
+**/node_modules/
+**/.venv/
+**/__pycache__/
+**/.git/
+**/dist/
+**/.vite/
+design references/
+**/*.db
+**/.env
+**/.DS_Store

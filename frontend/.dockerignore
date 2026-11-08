@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.vite/
+README.md
+.DS_Store
+*.log

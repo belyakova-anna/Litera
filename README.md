@@ -4,10 +4,27 @@
 
 ## Стек
 
-- **frontend** — React, TypeScript, Tailwind CSS, pnpm, Vite
+- **frontend** — React, TypeScript, Tailwind CSS, pnpm, Vite, nginx
 - **backend** — FastAPI, SQLAlchemy, SQLite, uv
 
-## Запуск
+## Запуск в Docker
+
+```bash
+cp .env.example .env   # при желании поменяйте пароль и SESSION_SECRET
+docker compose up --build
+```
+
+Откройте http://localhost:8080 — пароль по умолчанию: `litera`.
+
+Данные SQLite хранятся в volume `litera-data`. Порт меняется через `LITERA_PORT` в `.env`.
+
+Остановка:
+
+```bash
+docker compose down
+```
+
+## Локальная разработка (без Docker)
 
 ### Backend
 
@@ -17,10 +34,6 @@ uv sync
 uv run uvicorn main:app --reload --port 8000
 ```
 
-Пароль по умолчанию: `litera` (см. `backend/.env` или `backend/.env.example`).
-
-Для стабильного автокомплита Google Books можно задать `GOOGLE_BOOKS_API_KEY` в `backend/.env` (без ключа API иногда отвечает 429).
-
 ### Frontend
 
 ```bash
@@ -29,7 +42,9 @@ pnpm install
 pnpm dev
 ```
 
-Откройте http://localhost:5173 — запросы `/api` проксируются на backend.
+Откройте http://localhost:5173 — `/api` проксируется на backend.
+
+Для стабильного автокомплита Google Books задайте `GOOGLE_BOOKS_API_KEY` в `backend/.env` или корневом `.env` (Docker).
 
 ## Возможности
 

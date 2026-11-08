@@ -74,7 +74,7 @@ export function BookNewPage() {
   }
 
   return (
-    <SketchPage title="Новая запись" subtitle="подсказки из Google Books">
+    <SketchPage title="Новая запись">
       <form onSubmit={onSubmit} className="space-y-5">
         <label className="relative block">
           <span className="font-hand text-xl text-navy">Поиск книги</span>

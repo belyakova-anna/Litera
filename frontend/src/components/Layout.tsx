@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { api } from '../api/client'
 import { Crescent, StarBurst } from './CelestialDecor'
 
@@ -9,6 +9,9 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
   ].join(' ')
 
 export function Layout({ onLogout }: { onLogout: () => void }) {
+  const { pathname } = useLocation()
+  const onNewBook = pathname === '/books/new'
+
   return (
     <div className="min-h-screen">
       <header className="relative overflow-hidden border-b-2 border-gold/60 bg-navy text-paper shadow-[0_6px_0_rgba(201,162,39,0.35)]">
@@ -32,7 +35,10 @@ export function Layout({ onLogout }: { onLogout: () => void }) {
             <NavLink to="/" end className={linkClass}>
               Профиль
             </NavLink>
-            <NavLink to="/books" className={linkClass}>
+            <NavLink
+              to="/books"
+              className={({ isActive }) => linkClass({ isActive: isActive && !onNewBook })}
+            >
               Книги
             </NavLink>
             <NavLink to="/books/new" className={linkClass}>

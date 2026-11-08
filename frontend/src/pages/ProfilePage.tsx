@@ -6,9 +6,21 @@ import { ReadingHeatmap } from '../components/ReadingHeatmap'
 import { SketchPage } from '../components/SketchPage'
 import { StarBurst } from '../components/CelestialDecor'
 
+const FIELDS = [
+  ['display_name', 'Имя'],
+  ['favorite_genre', 'Любимый жанр'],
+  ['favorite_book', 'Любимая книга'],
+  ['favorite_character', 'Любимый персонаж'],
+] as const
+
+function emptyLabel(value: string) {
+  return value.trim() ? value : 'ещё не указано'
+}
+
 export function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [draft, setDraft] = useState<Profile | null>(null)
+  const [editing, setEditing] = useState(false)
   const [activity, setActivity] = useState<ReadingActivity | null>(null)
   const [books, setBooks] = useState<BookListItem[]>([])
   const [year, setYear] = useState(new Date().getFullYear())
@@ -40,15 +52,32 @@ export function ProfilePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  function startEdit() {
+    if (!profile) return
+    setDraft(profile)
+    setMessage(null)
+    setError(null)
+    setEditing(true)
+  }
+
+  function cancelEdit() {
+    setDraft(profile)
+    setMessage(null)
+    setError(null)
+    setEditing(false)
+  }
+
   async function onSave(e: FormEvent) {
     e.preventDefault()
     if (!draft) return
     setSaving(true)
     setMessage(null)
+    setError(null)
     try {
       const updated = await api.updateProfile(draft)
       setProfile(updated)
       setDraft(updated)
+      setEditing(false)
       setMessage('Профиль сохранён')
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Не удалось сохранить')
@@ -85,7 +114,7 @@ export function ProfilePage() {
     )
   }
 
-  if (!draft || !activity) {
+  if (!profile || !draft || !activity) {
     return (
       <SketchPage title="Профиль">
         <p className="font-hand text-2xl text-navy/60">Листаю дневник…</p>
@@ -93,48 +122,102 @@ export function ProfilePage() {
     )
   }
 
+  const shown = editing ? draft : profile
+
   return (
     <SketchPage
-      title={draft.display_name || 'Читатель'}
-      subtitle="профиль среди созвездий"
+      title={shown.display_name || 'Читатель'}
+      subtitle={editing ? 'редактирование профиля' : 'профиль среди созвездий'}
     >
-      <form onSubmit={onSave} className="grid gap-5 sm:grid-cols-2">
-        {(
-          [
-            ['display_name', 'Имя'],
-            ['favorite_genre', 'Любимый жанр'],
-            ['favorite_book', 'Любимая книга'],
-            ['favorite_character', 'Любимый персонаж'],
-          ] as const
-        ).map(([key, label]) => (
-          <label key={key} className="block">
-            <span className="font-hand text-xl text-navy">{label}</span>
-            <input
-              value={draft[key]}
-              onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
-              className="mt-1 w-full border-b-2 border-navy/20 bg-transparent px-1 py-1 outline-none focus:border-gold"
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <p className="font-hand text-xl text-navy/70">
+          {editing ? 'режим правки' : 'режим просмотра'}
+        </p>
+        {!editing ? (
+          <button
+            type="button"
+            onClick={startEdit}
+            className="border-2 border-navy bg-navy px-4 py-1.5 font-display text-lg text-gold-soft hover:bg-cobalt"
+          >
+            Редактировать
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={cancelEdit}
+            className="font-hand text-xl text-ochre underline"
+          >
+            Отменить
+          </button>
+        )}
+      </div>
+
+      {editing ? (
+        <form onSubmit={onSave} className="grid gap-5 sm:grid-cols-2">
+          {FIELDS.map(([key, label]) => (
+            <label key={key} className="block">
+              <span className="font-hand text-xl text-navy">{label}</span>
+              <input
+                value={draft[key]}
+                onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
+                className="mt-1 w-full border-b-2 border-navy/20 bg-transparent px-1 py-1 outline-none focus:border-gold"
+              />
+            </label>
+          ))}
+          <label className="block sm:col-span-2">
+            <span className="font-hand text-xl text-navy">О себе</span>
+            <textarea
+              value={draft.bio}
+              onChange={(e) => setDraft({ ...draft, bio: e.target.value })}
+              rows={3}
+              className="mt-1 w-full border-2 border-dashed border-navy/20 bg-paper-deep/30 px-3 py-2 outline-none focus:border-gold"
             />
           </label>
-        ))}
-        <label className="block sm:col-span-2">
-          <span className="font-hand text-xl text-navy">О себе</span>
-          <textarea
-            value={draft.bio}
-            onChange={(e) => setDraft({ ...draft, bio: e.target.value })}
-            rows={3}
-            className="mt-1 w-full border-2 border-dashed border-navy/20 bg-paper-deep/30 px-3 py-2 outline-none focus:border-gold"
-          />
-        </label>
-        <div className="sm:col-span-2">
-          <button
-            type="submit"
-            disabled={saving}
-            className="border-2 border-navy bg-navy px-5 py-2 font-display text-lg text-gold-soft hover:bg-cobalt disabled:opacity-60"
-          >
-            {saving ? 'Сохраняю…' : 'Сохранить профиль'}
-          </button>
+          <div className="flex flex-wrap gap-3 sm:col-span-2">
+            <button
+              type="submit"
+              disabled={saving}
+              className="border-2 border-navy bg-navy px-5 py-2 font-display text-lg text-gold-soft hover:bg-cobalt disabled:opacity-60"
+            >
+              {saving ? 'Сохраняю…' : 'Сохранить'}
+            </button>
+            <button
+              type="button"
+              onClick={cancelEdit}
+              className="border-2 border-navy/30 px-5 py-2 font-display text-lg text-navy hover:border-navy"
+            >
+              Отмена
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2">
+          {FIELDS.map(([key, label]) => (
+            <div key={key} className="border-b border-dashed border-gold/40 pb-3">
+              <p className="font-hand text-xl text-navy/70">{label}</p>
+              <p
+                className={[
+                  'mt-1 font-display text-2xl text-navy',
+                  profile[key].trim() ? '' : 'italic text-navy/40',
+                ].join(' ')}
+              >
+                {emptyLabel(profile[key])}
+              </p>
+            </div>
+          ))}
+          <div className="sm:col-span-2 border border-dashed border-ochre/40 bg-paper-deep/30 p-4">
+            <p className="font-hand text-xl text-navy/70">О себе</p>
+            <p
+              className={[
+                'mt-2 whitespace-pre-wrap leading-relaxed text-ink',
+                profile.bio.trim() ? '' : 'italic text-navy/40',
+              ].join(' ')}
+            >
+              {emptyLabel(profile.bio)}
+            </p>
+          </div>
         </div>
-      </form>
+      )}
 
       <section className="mt-10">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
@@ -142,9 +225,6 @@ export function ProfilePage() {
             <h2 className="font-display flex items-center gap-2 text-3xl text-navy">
               <StarBurst size={24} /> Частота чтения
             </h2>
-            <p className="font-hand text-lg text-ochre">
-              как вклад в GitHub — только звёзды вместо коммитов
-            </p>
           </div>
           <div className="flex items-center gap-2">
             <button
